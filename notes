@@ -1,0 +1,75 @@
+flow:
+
+from ui , customer clicks on buy now
+order is created in order service.
+clicks on pay now, then selects payment gateway
+order id and payment gateway choice is passed to payment service
+payment service gets order details from order service
+payment service calls apt payment gateway api or from sdk function
+which returns payment link to frontend.
+
+after payment is done, it can be redirected to url which can be set in payment link generation api call.
+
+once the payment is completed success/failure, webhook(callback url) is called by that payment gateway.
+webhook is like an api call to the payment service/order service to notify once the payment is completed.
+
+difference b/n redirect_url and webhook:
+    redirect_url only redirects on frontend and has only get api.
+    with webhook, all the custom logic can be implemnented once the payment is done.
+
+since product service is on localhost tunnel has to be made to expose it on the web(for payment service to include it in webhook)
+
+idempotency:
+    once the action is done and state changes to a state s, no matter how many times the same action is repeated,
+    it must remain in state s.
+    in our case, we need to avoid payment on the same order twice.
+    we can implement by using order id.
+
+Reconciliation
+    for the pending payment or payments is processing(not failed/successful) state,
+    the order/payment service takes all those payments and checks with payment service/payment gateway to fulfill them in
+    one of the 2 states(succesful/ failed).
+    this happens with the help of cron job reconciliation
+
+========================================================
+
+
+since the payment service needs to talk to the other services like order service once the payment is started from frontend,
+and we need sth to have all the details of all the other servers running other services.
+also, api gateway is used only for calls coming from outside and not internal calls.
+
+therefore, service discovery is another service which has registry of all the servers and their ips
+
+netflix's eureka server is used.
+it is started and the services are registered to it.
+
+the services get the ips of other services from eureka server.
+
+
+
+
+==========================================================================
+
+kafka
+for tasks which have to be performed after an event but can be delayed and need not be performed immediately
+
+install kafka
+run kafka server
+add dependency in pom
+in application properties add kafka details
+in kafka config add producer service and cnsumer service details
+run
+
+
+in services add relevant kafka code
+
+======================================================================
+
+redis
+install redis
+run redis server
+add dependency in pom
+in application properties add redis details
+
+in services add relevant redis code
+
