@@ -1,18 +1,13 @@
 package com.example.paymentservice.models;
 
 import com.stripe.Stripe;
-import com.stripe.StripeClient;
 import com.stripe.model.PaymentLink;
 import com.stripe.model.Price;
 import com.stripe.param.PaymentLinkCreateParams;
 import com.stripe.param.PriceCreateParams;
 import com.stripe.param.PriceCreateParams.ProductData;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
-
-import java.util.Map;
 
 @Component
 public class StripePG implements IPaymentGateway{
