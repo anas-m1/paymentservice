@@ -1,0 +1,13 @@
+PaymentController, PaymentService and models (IPaymentGateway - interface) and other implementations of interfaces corresponding to different gateways.
+Adapter design pattern is followed here
+
+
+webhook:
+    localtunnel for exposing endpoint of our service which will be called by razorpay
+    Localtunnel allows you to easily share a web service on your local development machine without messing with DNS and firewall settings.
+
+    npm install -g localtunnel
+    lt --port 8000  (the port on which payment service is running)
+
+    in stripe dashboard, webhook is configured.
+

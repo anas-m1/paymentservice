@@ -1,3 +1,8 @@
+order is created even before payment
+    1. to block inventory
+    2. to track failure
+    3. partial payment(i.e payment done but not received on merchants end, then it can be reconciled)
+
 flow:
 
 from ui , customer clicks on buy now
@@ -15,7 +20,7 @@ webhook is like an api call to the payment service/order service to notify once 
 
 difference b/n redirect_url and webhook:
     redirect_url only redirects on frontend and has only get api.
-    with webhook, all the custom logic can be implemnented once the payment is done.
+    with webhook, all the custom logic can be implemented once the payment is done.
 
 since product service is on localhost tunnel has to be made to expose it on the web(for payment service to include it in webhook)
 
@@ -37,8 +42,12 @@ Reconciliation
 since the payment service needs to talk to the other services like order service once the payment is started from frontend,
 and we need sth to have all the details of all the other servers running other services.
 also, api gateway is used only for calls coming from outside and not internal calls.
+because if we go from service1 to igw to service2, it will be 2 hops and hence latency
 
-therefore, service discovery is another service which has registry of all the servers and their ips
+instead with service discovery, service1 calls it once and it gives all the details of all the other servers.
+therefore, service discovery is another service which has registry of all the servers and their ips  
+for load balancing, we use client side load balancing (in this case service1 is client)
+
 
 netflix's eureka server is used.
 it is started and the services are registered to it.
